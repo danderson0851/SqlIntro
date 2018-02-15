@@ -31,7 +31,11 @@ namespace SqlIntro
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    yield return new Product { Name = dr["Name"].ToString() };
+                    yield return new Product
+                    {
+                        Name = dr["Name"].ToString(),
+                        Id = int.Parse(dr["ProductId"].ToString())
+                    };
                 }
             }
         }
@@ -46,7 +50,8 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "DELETE FROM product WHERE ProductID = 316"; //Write a delete statement that deletes by id
+                cmd.CommandText = "DELETE FROM product WHERE ProductID = @id"; 
+                cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -62,7 +67,7 @@ namespace SqlIntro
             {
                 var cmd = conn.CreateCommand();
                 conn.Open();
-                cmd.CommandText = "UPDATE product SET name = 'Chain SUCCESS!!' WHERE id = 952"; //952 is "Chain" originally
+                cmd.CommandText = "UPDATE product SET Name = @name WHERE ProductID = @id"; 
                 cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.Parameters.AddWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
