@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 using MySql.Data.MySqlClient;
 
 namespace SqlIntro
@@ -24,10 +25,18 @@ namespace SqlIntro
         {
             using (var conn = new MySqlConnection(_connectionString))
             {
-                var cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT * FROM product ORDER BY Name LIMIT 25";
                 conn.Open();
-                var dr = cmd.ExecuteReader();
+                var sql = "SELECT * FROM product ORDER BY Name LIMIT 25";
+                var parameters = new { id = 1 };
+                var products = conn.Query(sql, parameters);
+                var firstProduct = products.First();
+
+                /*
+                 var cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT * FROM product";
+                */
+
+                var dr = products.First();
                 while (dr.Read())
                 {
                     yield return new Product
