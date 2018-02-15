@@ -21,18 +21,18 @@ namespace SqlIntro
 
             prod2 = new Product
             {
-                Id = 843,
-                Name = "Alpha Changed"
+                Id = 712,
+                Name = ""
             };
             if (prod2 != null)
             {
-                Console.WriteLine($"{prod2.Name} and {prod2.Id}");
-                prod2.Name = "Chain Did Update for id 1";
-
+                prod2.Name = "Original product name for ID 712";
                 repo.UpdateProduct(prod2);
             }
 
-
+            prod2.Name = "Blazers";
+            prod2.Id = 1000;
+            repo.InsertProduct(prod2);
             Console.WriteLine("\nThe Program has ended, press any key to exit...");
             Console.ReadLine();
         }

@@ -82,8 +82,10 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT INTO product (Name) values(Blazers)";
+                conn.Open();
+                cmd.CommandText = "INSERT INTO product (Name) values(@name)";
                 cmd.Parameters.AddWithValue("@name", prod.Name);
+                cmd.Parameters.AddWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
             }
         }
