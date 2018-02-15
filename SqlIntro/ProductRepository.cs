@@ -26,7 +26,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT * FROM product ORDER BY Name LIMIT 25"; 
+                cmd.CommandText = "SELECT * FROM product ORDER BY Name"; 
                 conn.Open();
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -55,6 +55,7 @@ namespace SqlIntro
                 cmd.ExecuteNonQuery();
             }
         }
+
         /// <summary>
         /// Updates the Product in the database
         /// </summary>
