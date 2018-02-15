@@ -11,13 +11,17 @@ namespace SqlIntro
             var repo = new ProductRepository(connectionString);
             foreach (var prod in repo.GetProducts())
             {
-                Console.WriteLine("Product Name:" + prod.Name);
+                Console.WriteLine("Product Name: " + prod.Name);
             }
+            
 
-           
+            //repo.DeleteProduct(316);
+            //repo.UpdateProduct();
+
+            Console.WriteLine("\nThe Program has ended, press any key to exit...");
             Console.ReadLine();
         }
 
-       
+
     }
 }

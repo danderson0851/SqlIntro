@@ -26,7 +26,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "SELECT * FROM product"; //TODO:  Write a SELECT statement that gets all products
+                cmd.CommandText = "SELECT * FROM product ORDER BY Name LIMIT 25"; 
                 conn.Open();
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -45,7 +45,8 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = ""; //Write a delete statement that deletes by id
+                conn.Open();
+                cmd.CommandText = "DELETE FROM product WHERE ProductID = 316"; //Write a delete statement that deletes by id
                 cmd.ExecuteNonQuery();
             }
         }
@@ -60,7 +61,8 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "update product set name = @name where id = @id";
+                conn.Open();
+                cmd.CommandText = "UPDATE product SET name = 'Chain SUCCESS!!' WHERE id = 952"; //952 is "Chain" originally
                 cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.Parameters.AddWithValue("@id", prod.Id);
                 cmd.ExecuteNonQuery();
@@ -75,7 +77,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "INSERT into product (name) values(@name)";
+                cmd.CommandText = "INSERT INTO product (Name) values(Blazers)";
                 cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
             }
