@@ -8,31 +8,31 @@ namespace SqlIntro
         {
             var connectionString = "Server=localhost; Database=adventureworks; Uid=root; Pwd=password;"; //get connectionString format from connectionstrings.com and change to match your database
             Product prod2 = null;
-            var repo = new ProductRepository(connectionString);
+            var repo = new DapperProductRepository(connectionString);
             foreach (var prod in repo.GetProducts())
             {
-                //if (prod2 == null) { prod2 = prod; }
-
                 Console.WriteLine("Product Name: " + prod.Name);
             }
 
 
-            repo.DeleteProduct(879);
+            repo.DeleteProduct(1040);
 
             prod2 = new Product
             {
-                Id = 712,
+                Id = 1000,
                 Name = ""
             };
             if (prod2 != null)
             {
-                prod2.Name = "Original product name for ID 712";
+                prod2.Name = "This name was UPDATED!";
+                prod2.Id = 1000;
                 repo.UpdateProduct(prod2);
             }
 
-            prod2.Name = "Blazers";
-            prod2.Id = 1000;
+            prod2.Name = "Here is a new product!";
+            //prod2.Id = 1005;
             repo.InsertProduct(prod2);
+
             Console.WriteLine("\nThe Program has ended, press any key to exit...");
             Console.ReadLine();
         }

@@ -25,7 +25,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<Product>("SELECT * FROM product LIMIT 10");
+                return conn.Query<Product>("SELECT * FROM product");
             }
         }
 
@@ -38,7 +38,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("DELETE FROM product WHERE ProductID = 317");
+                conn.Execute("DELETE FROM product WHERE ProductID = 1023");
             }
         }
 
@@ -53,7 +53,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("UPDATE product SET Name = ('boogers') WHERE ProductID = (1000)");
+                conn.Execute("UPDATE product SET Name = ('Updated Boogers!') WHERE ProductID = (1000)");
             }
         }
         /// <summary>
@@ -65,7 +65,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("INSERT INTO product (Name) values('shenanigans')");
+                conn.Execute("INSERT INTO product (Name) values('New Shenanigans!')");
             }
         }
     }

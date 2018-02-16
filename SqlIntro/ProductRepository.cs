@@ -27,7 +27,13 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                return conn.Query<Product>("SELECT * FROM product LIMIT 10");
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "SELECT * FROM product";
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    yield return new Product { Name = dr["Name"].ToString() };
+                }
             }
         }
 
@@ -40,7 +46,10 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("DELETE FROM product WHERE ProductID = 317");
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM product WHERE ProductID > @id"; //Write a delete statement that deletes by id
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -55,7 +64,11 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("UPDATE product SET Name = ('boogers') WHERE ProductID = (1000)");   
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "UPDATE product SET name = @name WHERE ProductID = @id";
+                cmd.Parameters.AddWithValue("@name", prod.Name);
+                cmd.Parameters.AddWithValue("@id", prod.Id);
+                cmd.ExecuteNonQuery();
             }
         }
         /// <summary>
@@ -67,7 +80,10 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("INSERT INTO product (Name) values('shenanigans')");
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "INSERT INTO product (Name) VALUES(@name)";
+                cmd.Parameters.AddWithValue("@name", prod.Name);
+                cmd.ExecuteNonQuery();
             }
         }
     }
