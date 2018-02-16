@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 
 namespace SqlIntro
 {
-    public class DapperProductRepository
+    public class DapperProductRepository 
     {
         private readonly string _connectionString;
 
