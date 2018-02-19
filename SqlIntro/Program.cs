@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+using MySql.Data.MySqlClient;
 
 namespace SqlIntro
 {
@@ -6,15 +8,13 @@ namespace SqlIntro
     {
         static void Main(string[] args)
         {
-            var connectionString = "Server=localhost; Database=adventureworks; Uid=root; Pwd=password;"; //get connectionString format from connectionstrings.com and change to match your database
+            var connectionString = ConfigurationManager.ConnectionStrings["AdventureWorks"].ConnectionString;
             Product prod2 = null;
             var repo = new DapperProductRepository(connectionString);
             foreach (var prod in repo.GetProducts())
             {
                 Console.WriteLine("Product Name: " + prod.Name);
             }
-
-
             repo.DeleteProduct(1040);
 
             prod2 = new Product
