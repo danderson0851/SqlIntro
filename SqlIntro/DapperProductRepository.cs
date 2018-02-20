@@ -34,7 +34,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("DELETE FROM product WHERE ProductID = 1023");
+                conn.Execute("DELETE FROM product WHERE ProductID = @id", new {id});
             }
         }
 
@@ -49,7 +49,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("UPDATE product SET Name = ('Updated Boogers!') WHERE ProductID = (1000)");
+                conn.Execute("UPDATE product SET Name = @name WHERE ProductID = @id", new { name = prod.Name, id = prod.Id });
             }
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("INSERT INTO product (Name) values('New Shenanigans!')");
+                conn.Execute("INSERT INTO product (name) values(@name)", new { name = prod.Name});
             }
         }
     }
