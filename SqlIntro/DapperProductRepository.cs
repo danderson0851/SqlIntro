@@ -34,7 +34,7 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("DELETE FROM product WHERE ProductID = @id", new {id});
+                conn.Execute("DELETE FROM product WHERE ProductID > @id", new { id });
             }
         }
 
@@ -61,8 +61,31 @@ namespace SqlIntro
             using (var conn = new MySqlConnection(_connectionString))
             {
                 conn.Open();
-                conn.Execute("INSERT INTO product (name) values(@name)", new { name = prod.Name});
+                conn.Execute("INSERT INTO product (name) values(@name)", new { name = prod.Name });
             }
         }
+
+        public IEnumerable<Product> GetProductsAndReview()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                return conn.Query<Product>(
+                    "SELECT product.Name, productreview.Rating FROM Product LEFT JOIN productreview ON productreview.productID = product.productID");
+            }
+        }
+        public IEnumerable<Product> GetProductsWithReview()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                return conn.Query<Product>("SELECT product.Name, productreview.Rating FROM Product INNER JOIN productreview ON productreview.productID = product.productID");
+            }
+        }
+
+
+
+
+
     }
 }

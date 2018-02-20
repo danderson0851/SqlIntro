@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace SqlIntro
 {
@@ -11,6 +11,7 @@ namespace SqlIntro
         {
             _connectionString = connectionString;
         }
+
         /// <summary>
         /// Reads all the products from the products table
         /// </summary>
@@ -25,7 +26,7 @@ namespace SqlIntro
                 var dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    yield return new Product { Name = dr["Name"].ToString() };
+                    yield return new Product {Name = dr["Name"].ToString()};
                 }
             }
         }
@@ -40,7 +41,8 @@ namespace SqlIntro
             {
                 conn.Open();
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = "DELETE FROM product WHERE ProductID > @id"; //Write a delete statement that deletes by id
+                cmd.CommandText =
+                    "DELETE FROM product WHERE ProductID > @id"; //Write a delete statement that deletes by id
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
@@ -64,6 +66,7 @@ namespace SqlIntro
                 cmd.ExecuteNonQuery();
             }
         }
+
         /// <summary>
         /// Inserts a new Product into the database
         /// </summary>
@@ -77,6 +80,46 @@ namespace SqlIntro
                 cmd.CommandText = "INSERT INTO product (Name) VALUES(@name)";
                 cmd.Parameters.AddWithValue("@name", prod.Name);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public IEnumerable<Product> GetProductsAndReview()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText =
+                ("SELECT product.Name, productreview.Rating FROM Product LEFT JOIN productreview ON productreview.productID = product.productID"
+                );
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    yield return new Product
+                    {
+                        Name = dr["Name"].ToString(),
+                        Id = int.Parse(dr["prodcutreview"].ToString())
+                    };
+                }
+            }
+        }
+
+        public IEnumerable<Product> GetProductsWithReview()
+        {
+            using (var conn = new MySqlConnection(_connectionString))
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = ("SELECT product.Name, productreview.Rating FROM Product INNER JOIN productreview ON productreview.productID = product.productID");
+                var dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    yield return new Product
+                    {
+                        Name = dr["Name"].ToString(),
+                        Id = int.Parse(dr["ProductId"].ToString())
+                    };
+                }
             }
         }
     }
